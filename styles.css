@@ -6,6 +6,24 @@ body {
     background-color: rgba(40, 50, 65);
     padding: 65px;
 }
+.hero {
+    position: relative;
+    height: 100vh;
+    width: 100vh;
+    background-image: url(pixil-frame-O.png);
+    background-size:cover;
+    background-poisiton:center;
+    .hero-text {
+        position: absolute;
+        top:50%;
+        left:50%;
+        color:white;
+font-family: 'press start 2p';
+        text-shadow:2px 2px 8px
+        rgba(0,0,0,0.7);
+    }
+    
+}
 
 h1 {
 font-family: 'press start 2p';
@@ -89,4 +107,5 @@ transition: transform 0.2s, box-shadow 0.2s;
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 transition: transform 0.2s, box-shadow 0.2s;
+
 }
