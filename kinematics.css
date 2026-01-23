@@ -114,4 +114,38 @@ canvas {
 .panel button,
 .panel input {
   width: 100%;
+
+	.full-width-next-bar {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+            width: 100%;       /* Touches both sides */
+            height: 200px;     /* Makes it a big, chunky section */
+            background: rgb(20, 25, 33);  /* Black background */
+            color: #fff;       /* White text */
+            
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .full-width-next-bar:hover {
+            background: rgb(0, 0, 0); /* Turns red when you hover */
+        }
+
+      
+
+        
+
+        
+
+        .main-link-text {
+            font-size: 4vw; /* Gets bigger with the screen */
+                   font-family: 'press start 2p';
+
 }
+
