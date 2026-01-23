@@ -3,26 +3,8 @@
 
 
 body {
-    background-color: rgba(40, 50, 65);
+    background-color: rgba(8, 20, 42);
     padding: 65px;
-}
-.hero {
-    position: relative;
-    height: 100vh;
-    width: 100vh;
-    background-image: url(pixil-frame-O.png);
-    background-size:cover;
-    background-poisiton:center;
-    .hero-text {
-        position: absolute;
-        top:50%;
-        left:50%;
-        color:white;
-font-family: 'press start 2p';
-        text-shadow:2px 2px 8px
-        rgba(0,0,0,0.7);
-    }
-    
 }
 
 h1 {
@@ -32,6 +14,13 @@ display: flex;
 justify-content: center;
 padding: 20px;
 }
+
+.bg {
+    background-size: cover;
+    background-position: center;
+
+} 
+
 
 .topics a {
     text-decoration: none;
@@ -107,5 +96,32 @@ transition: transform 0.2s, box-shadow 0.2s;
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 transition: transform 0.2s, box-shadow 0.2s;
-
 }
+
+.full-width-next-bar {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+            width: 100%;       /* Touches both sides */
+            height: 200px;     /* Makes it a big, chunky section */
+            background: #000;  /* Black background */
+            color: #fff;       /* White text */
+            
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .full-width-next-bar:hover {
+            background: #ff0000; /* Turns red when you hover */
+        }
+
+        
+
+        .main-link-text {
+            font-size: 4vw; /* Gets bigger with the screen */
+        }
