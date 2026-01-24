@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Press+Start+2P&family=Roboto:ital,wght@0,100..900;1,100..900&family=Sekuya&display=swap');
+
+       body, html {
+            margin: 0;
+            padding: 0;
+        }
+
+        .hero-wrapper {
+            width: 100%;
+            position: relative; /* This is the anchor for the text */
+            line-height: 0;
+        }
+
+        /* Image Styling */
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .top-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: fast-switch 2s ease-in-out infinite;
+        }
+
+        @keyframes fast-switch {
+            0%, 40%   { opacity: 1; }
+            50%, 90%  { opacity: 0; }
+            100%      { opacity: 1; }
+        }
+
+        /* --- NEW TEXT STYLING --- */
+        .overlay-text {
+            position: absolute;
+            /* Center the text perfectly */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+    font-family: 'press start 2p';
+            
+            /* Visual Styling */
+            color: white;
+            font-size: 3vw; /* Font size grows with screen width */
+            text-align: center;
+            text-transform: uppercase;
+            white-space: nowrap; /* Prevents text from wrapping */
+            
+            /* Important: makes text readable on any background */
+            text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.7);
+            pointer-events: none; /* Allows clicks to pass through to images if needed */
+            z-index: 10; /* Keeps text above both images */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero-wrapper">
+        <div class="image-container">
+            <img src="/images/0.png" alt="First Image">
+            <img src="/images/1.png" alt="Second Image" class="top-image">
+        </div>
+
+        <div class="overlay-text">
+            YOUR PHYSICS QUEST
+        </div>
+          <div class="overlay-text" style="top: 70%;">
+            STARTS HERE
+        </div>
+    </div>
+   
+
+    <h1>What Do You Want To Learn Today...?</h1>
+
+    <div class="topics">
+
+        <a href="/pages/kinematics.html"> 
+            <div class="kinematics card">
+                <img class="image" src="/images/KINE.png">
+                <h2>Kinematics</h2>
+            </div>
+        </a>
+
+       <a href="/physics/pages/kinematics.html">
+        <div class="dynamics card">
+                <img class="image 1" src="/images/DYN.png">
+                <h2>Dynamics</h2>
+            </div>
+       </a>
+
+       <a href="/physics/pages/kinematics.html">
+        <div class="laws card">
+                <img class="image " src="/images/newton.png">
+  <h2>Newton's Laws of Motion</h2>  </div>
+       </a>
+
+  <a href="/physics/pages/kinematics.html">
+        <div class="projectile card">
+                <img class="image 1" src="/images/PROJECT.png">
+                  <h2>Projectile Motion</h2>
+
+            </div>
+       </a>
+
+      
+     
+
+
+    </div>
+</body>
+</html>
