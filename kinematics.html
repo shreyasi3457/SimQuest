@@ -28,14 +28,14 @@
   <h2 style="font-family: 'press start 2p';">Distance vs Displacement</h2>
 
   <div class="sim-container">
-    <canvas id="canvas" width="800" height="500"></canvas>
+    <canvas id="dd-canvas" width="800" height="500"></canvas>
 
     <div class="panel">
-      <div id="distance">Distance: 0 m</div>
-      <div id="displacement">Displacement: 0 m</div>
+      <div id="dd-distance">Distance: 0 m</div>
+      <div id="dd-displacement">Displacement: 0 m</div>
 
-      <button onclick="playPath()">Play</button>
-      <button onclick="resetPath()">Reset</button>
+      <button id="dd-play">Play</button>
+      <button id="dd-reset">Reset</button>
 
       <p class="hint">
         Distance depends on the path.  
@@ -53,74 +53,37 @@
 
 <p>Try out different values of acceleration and play the animation to see how it affects velocity. </p>
 
-<section class="sim-section">
-  <h2>Acceleration</h2>
+<section id="acceleration" class="sim-section">
+  <h2 style="font-family: 'press start 2p';">Acceleration</h2>
 
   <div class="sim-container">
-    <canvas id="accelCanvas" width="900" height="300"></canvas>
+    <canvas id="acc-canvas" width="900" height="300"></canvas>
 
     <div class="panel">
-      <div>Acceleration: <span id="accelVal">0</span> m/s²</div>
+      <div>Acceleration: <span id="acc-val">0</span> m/s²</div>
 
       <input
         type="range"
-        id="accelSlider"
+        id="acc-slider"
         min="-2"
         max="2"
         step="0.1"
         value="0"
       />
 
-      <button onclick="togglePlay()">Play / Pause</button>
-      <button onclick="resetMotion()">Reset</button>
+      <button id="acc-play">Play / Pause</button>
+      <button id="acc-reset">Reset</button>
 
       <p class="hint">
-        Acceleration changes velocity — not position directly.
+        Green moves at a constant speed. Blue speeds up or slows down based on your acceleration value.
       </p>
     </div>
   </div>
 </section>
 
 
-<p>This animation demonstrates how constant acceleration affects velocity and position. Try out different values for initial velocity, acceleration, and time and press play to see how it changes and affects motion. </p>
 
-<section class="sim-section">
-  <h2 style="font-family: press ;">Constant Acceleration</h2>
 
-  <div class="sim-container">
-    <canvas id="constAccelCanvas" width="900" height="300"></canvas>
-
-    <div class="panel">
-      <label>
-        Initial velocity v₀:
-        <span id="v0Val">0</span> m/s
-      </label>
-      <input type="range" id="v0Slider" min="-5" max="5" step="0.1" value="0">
-
-      <label>
-        Acceleration a:
-        <span id="aVal">0</span> m/s²
-      </label>
-      <input type="range" id="aSlider" min="-2" max="2" step="0.1" value="0">
-
-      <label>
-        Time t:
-        <span id="tVal">0</span> s
-      </label>
-      <input type="range" id="tSlider" min="0" max="10" step="0.1" value="0">
-
-      <button onclick="playConstAccel()">Play</button>
-      <button onclick="resetConstAccel()">Reset</button>
-      <button onclick="toggleMath()">Show / Hide Math</button>
-
-      <div id="mathBox" style="display:none; font-size:0.9rem;">
-        <p><strong>Equations:</strong></p>
-        <p>v = v₀ + at</p>
-        <p>x = x₀ + v₀t + ½at²</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 
 <h3>Motion Graphs</h3>
@@ -143,17 +106,10 @@
 
 
 <script>
-    /* ============================================
-   DISTANCE VS DISPLACEMENT
-   Click/drag on the canvas to draw a path.
-   Distance  = total length of everything you drew.
-   Displacement = straight line from where you
-                  started to where you let go.
-   ============================================ */
 
 (function () {
   const canvas = document.getElementById('dd-canvas');
-  if (!canvas) return; // this section isn't on the page — do nothing
+  if (!canvas) return; 
 
   const ctx = canvas.getContext('2d');
   const distanceEl = document.getElementById('dd-distance');
@@ -161,7 +117,7 @@
   const playBtn = document.getElementById('dd-play');
   const resetBtn = document.getElementById('dd-reset');
 
-  const PX_PER_M = 20; // pixels treated as "1 meter" for the displayed numbers
+  const PX_PER_M = 20; 
 
   let points = [];
   let drawing = false;
@@ -206,7 +162,6 @@
     drawGrid();
     if (points.length === 0) return;
 
-    // the path itself, in blue
     ctx.strokeStyle = '#5fd0ff';
     ctx.lineWidth = 3;
     ctx.beginPath();
@@ -214,7 +169,6 @@
     for (let i = 1; i < points.length; i++) ctx.lineTo(points[i].x, points[i].y);
     ctx.stroke();
 
-    // dashed line = displacement, in orange
     if (points.length > 1) {
       ctx.save();
       ctx.strokeStyle = '#f6a745';
@@ -227,8 +181,8 @@
       ctx.restore();
     }
 
-    drawDot(points[0], '#4caf50'); // start = green
-    if (points.length > 1) drawDot(points[points.length - 1], '#f66546'); // end = red
+    drawDot(points[0], '#4caf50');
+    if (points.length > 1) drawDot(points[points.length - 1], '#f66546');
   }
 
   function distance() {
@@ -311,11 +265,150 @@
 
   drawGrid();
 })();
-</script>    
+</script>
 
+<script>
 
+(function () {
+  const canvas = document.getElementById('acc-canvas');
+  if (!canvas) return; 
 
-<script src="code.js" ></script>
+  const ctx = canvas.getContext('2d');
+  const valEl = document.getElementById('acc-val');
+  const slider = document.getElementById('acc-slider');
+  const playBtn = document.getElementById('acc-play');
+  const resetBtn = document.getElementById('acc-reset');
+
+  const PX_PER_M = 40;      
+  const CONST_V = 2;           
+  const START_V = 2;            
+  const TRACK_LEFT = 40;
+  const TRACK_RIGHT = canvas.width - 40;
+  const TRACK_LEN_M = (TRACK_RIGHT - TRACK_LEFT) / PX_PER_M;
+
+  const TRACK_Y_CONST = 90;   
+  const TRACK_Y_ACCEL = 210;  
+
+  let accel = 0;
+  let playing = false;
+  let lastTime = null;
+
+  let xConstM = 0;   
+  let xAccelM = 0;   
+  let vAccel = START_V;
+
+  slider.addEventListener('input', () => {
+    accel = parseFloat(slider.value);
+    valEl.textContent = accel.toFixed(1);
+  });
+
+  function wrap(x, max) {
+    return ((x % max) + max) % max;
+  }
+
+  function drawArrow(x, y, lengthPx, color) {
+    if (Math.abs(lengthPx) < 2) return;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + lengthPx, y);
+    ctx.stroke();
+
+    const dir = Math.sign(lengthPx);
+    ctx.beginPath();
+    ctx.moveTo(x + lengthPx, y);
+    ctx.lineTo(x + lengthPx - dir * 8, y - 6);
+    ctx.lineTo(x + lengthPx - dir * 8, y + 6);
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+  }
+
+  function drawScene() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 2;
+    [TRACK_Y_CONST, TRACK_Y_ACCEL].forEach((y) => {
+      ctx.beginPath();
+      ctx.moveTo(TRACK_LEFT, y);
+      ctx.lineTo(TRACK_RIGHT, y);
+      ctx.stroke();
+    });
+
+    ctx.font = '14px sans-serif';
+    ctx.fillStyle = '#8be08b';
+    ctx.fillText('Constant velocity', TRACK_LEFT, TRACK_Y_CONST - 45);
+    ctx.fillStyle = '#5fd0ff';
+    ctx.fillText('Your object', TRACK_LEFT, TRACK_Y_ACCEL - 45);
+
+    const pxConst = TRACK_LEFT + wrap(xConstM, TRACK_LEN_M) * PX_PER_M;
+    ctx.beginPath();
+    ctx.fillStyle = '#4caf50';
+    ctx.arc(pxConst, TRACK_Y_CONST, 13, 0, Math.PI * 2);
+    ctx.fill();
+    drawArrow(pxConst, TRACK_Y_CONST - 25, CONST_V * 15, '#8be08b');
+
+    const pxAccel = TRACK_LEFT + wrap(xAccelM, TRACK_LEN_M) * PX_PER_M;
+    ctx.beginPath();
+    ctx.fillStyle = '#5fd0ff';
+    ctx.arc(pxAccel, TRACK_Y_ACCEL, 13, 0, Math.PI * 2);
+    ctx.fill();
+    drawArrow(pxAccel, TRACK_Y_ACCEL - 25, vAccel * 15, '#5fd0ff');
+
+    ctx.font = '14px sans-serif';
+    ctx.fillStyle = '#eaeaf0';
+    ctx.fillText(`v = ${CONST_V.toFixed(1)} m/s`, TRACK_LEFT, TRACK_Y_CONST + 35);
+    ctx.fillText(`v = ${vAccel.toFixed(1)} m/s`, TRACK_LEFT, TRACK_Y_ACCEL + 35);
+
+    const gap = xAccelM - xConstM;
+    let gapText;
+    if (Math.abs(gap) < 0.05) gapText = "They're tied!";
+    else if (gap > 0) gapText = `Blue is ahead by ${gap.toFixed(1)} m`;
+    else gapText = `Blue is behind by ${Math.abs(gap).toFixed(1)} m`;
+
+    ctx.font = '16px sans-serif';
+    ctx.fillStyle = '#f6a745';
+    ctx.fillText(gapText, TRACK_LEFT, 270);
+  }
+
+  function step(timestamp) {
+    if (!playing) return;
+    if (lastTime === null) lastTime = timestamp;
+    const dt = (timestamp - lastTime) / 1000;
+    lastTime = timestamp;
+
+    xConstM += CONST_V * dt;
+    vAccel += accel * dt;
+    xAccelM += vAccel * dt;
+
+    drawScene();
+    requestAnimationFrame(step);
+  }
+
+  if (playBtn) {
+    playBtn.addEventListener('click', () => {
+      playing = !playing;
+      lastTime = null;
+      if (playing) requestAnimationFrame(step);
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      playing = false;
+      lastTime = null;
+      xConstM = 0;
+      xAccelM = 0;
+      vAccel = START_V;
+      drawScene();
+    });
+  }
+
+  drawScene();
+})();
+</script>
 
 </body>
 </html>
